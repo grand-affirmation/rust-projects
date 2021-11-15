@@ -4,6 +4,7 @@
 
 use std::fs;
 use std::process::{self, Command};
+use home;
 
 struct Todo{desc: String, status: bool}
 
@@ -13,7 +14,6 @@ impl Default for Todo {
             desc: String::new(),
             status: false,
         }
-
     }
 }
 
@@ -30,13 +30,14 @@ impl TM
             Ok(r) => {
                 if r { 
                     unimplemented!()
-                } else { 
-                    fs::create_dir("~/.config/todo-manager");
-                    println!("Made folder");
+                } else {
+                    let home_dir = home::home_dir().expect("Unable to get home directory.").
+                        as_os_str().to_str().unwrap().to_string();
+                    fs::create_dir(format!("{}/.config/todo-manager", home_dir));
                     let t: Vec<Todo> = Vec::new();
                     TM {
                         todos: t,
-                        save_path: String::from("~/.config/todo-manager/todos"),
+                        save_path: String::from(format!("{}/.config/todo-manager/todos", home_dir)),
                     }
                 }
             }
