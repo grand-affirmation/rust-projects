@@ -7,5 +7,5 @@ use tm::TM;
 fn main() 
 {
     let args = env::args().collect::<Vec<String>>();
-    TM::new();
+    let t_manager = TM::new();
 }
