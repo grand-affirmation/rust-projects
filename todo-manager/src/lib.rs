@@ -3,13 +3,13 @@
 #![feature(path_try_exists)]
 
 use std::fs;
-use std::process::{self, Command};
+use std::process;
 use std::error::Error;
 use home;
 
 pub struct TM
 {
-    todos: Vec<Todo>,
+    todos: Vec<String>,
     save_path: String,
 }
 
@@ -22,20 +22,16 @@ impl TM
         match fs::try_exists(format!("{}/.config/todo-manager", &home_dir)) {
             Ok(r) => {
                 if r {
-                    let config_output = fs::read_to_string(&file_path).unwrap();
-                    let test = config_output.rsplitn(2, ' ').collect::<Vec<&str>>();
-                    println!("{}", config_output);
-                    println!("{:?}", test);
-                    let t: Vec<Todo> = Vec::new();
+                    let mut lines: Vec<String> = Vec::new();
+                    fs::read_to_string(&file_path).unwrap().lines().for_each(|l| lines.push(l.to_string()));
                     TM {
-                        todos: t,
+                        todos: lines, 
                         save_path: file_path,
                     }
                 } else {
                     fs::create_dir(format!("{}/.config/todo-manager", home_dir));
-                    let t: Vec<Todo> = Vec::new();
                     TM {
-                        todos: t,
+                        todos: Vec::new(),
                         save_path: file_path,
                     }
                 }
@@ -47,18 +43,44 @@ impl TM
         }
     }
 
-    pub fn parse_args(&self, args: Vec<String>) -> Result<(), Box<dyn Error>> {
-        unimplemented!()
+    pub fn parse_args(&mut self, args: Vec<String>) -> Result<(), Box<dyn Error>> {
+        if args.len() < 3 {
+            show_help();
+            process::exit(1);
+        }
+        
+        let option = args.get(1).unwrap();
+        let option2 = args.get(2).unwrap().to_string(); // this is the todo item to be add or index to be remove
+        if option == &"add".to_string() {
+            self.add_todo(option2);
+        } else if option == &"remove".to_string() {
+            self.remove_todo(option2.parse::<usize>().unwrap());
+        } else { 
+            show_help();
+            process::exit(1);
+        }
+
+        Ok(())
+    }
+
+    fn add_todo(&mut self, todo: String) {
+        self.todos.push(todo);
+    }
+
+    fn remove_todo(&mut self, index: usize) {
+        self.todos.remove(index-1); // minus 1 because when the todos are displayed, count starts at 1
     }
 }
 
-struct Todo{desc: String, status: bool}
+fn show_help()
+{
+    eprintln!("
+Todo Manager 
 
-impl Default for Todo {
-    fn default() -> Todo {
-        Todo{
-            desc: String::new(),
-            status: false,
-        }
-    }
+USAGE
+    tm [OPTIONS] [args]
+
+OPTIONS
+    add     adds a new todo item
+    remove  removes a todo item");
 }
