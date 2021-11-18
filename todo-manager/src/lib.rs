@@ -45,16 +45,19 @@ impl TM
 
     pub fn parse_args(&mut self, args: Vec<String>) -> Result<(), Box<dyn Error>> {
         if args.len() < 3 {
-            show_help();
+            self.todo_show();
             process::exit(1);
         }
-        
+
         let option = args.get(1).unwrap();
         let option2 = args.get(2).unwrap().to_string(); // this is the todo item to be add or index to be remove
+        
         if option == &"add".to_string() {
-            self.add_todo(option2);
+            self.todo_add(option2);
         } else if option == &"remove".to_string() {
-            self.remove_todo(option2.parse::<usize>().unwrap());
+            self.todo_remove(option2.parse::<usize>().unwrap());
+        } else if option == &"show".to_string() {
+            self.todo_show();
         } else { 
             show_help();
             process::exit(1);
@@ -63,12 +66,22 @@ impl TM
         Ok(())
     }
 
-    fn add_todo(&mut self, todo: String) {
+    fn todo_add(&mut self, todo: String) {
         self.todos.push(todo);
     }
 
-    fn remove_todo(&mut self, index: usize) {
+    fn todo_remove(&mut self, index: usize) {
         self.todos.remove(index-1); // minus 1 because when the todos are displayed, count starts at 1
+    }
+
+    fn todo_show(&self) {
+        let mut index = 1;
+
+        println!("TODO LIST\n");
+        for todo in self.todos.iter() {
+            println!("[{}]  {}", index, todo);
+            index += 1;
+        }
     }
 }
 
