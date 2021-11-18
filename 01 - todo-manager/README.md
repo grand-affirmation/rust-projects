@@ -1,5 +1,7 @@
 # README
 
+![](preview.gif)
+
 This project aims to provide a simple to use TODO CLI app.
 
 ## Installation
