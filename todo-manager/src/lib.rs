@@ -80,6 +80,11 @@ impl TM
 
     fn todo_remove(&mut self, index: usize) {
         self.todos.remove(index-1); // minus 1 because when the todos are displayed, count starts at 1
+        let new_list_of_todo: String = self.todos.join("\n");
+        if let Err(e) = fs::write(&self.save_path, new_list_of_todo) {
+            eprintln!("Error: {}", e);
+            process::exit(1);
+        }
     }
 
     fn todo_show(&self) {
