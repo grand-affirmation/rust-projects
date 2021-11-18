@@ -19,7 +19,7 @@ impl TM
         let home_dir = home::home_dir().expect("Unable to get home directory.").as_os_str().to_str().unwrap().to_string();
         let file_path = String::from(format!("{}/.config/todo-manager/todos", home_dir));
 
-        match fs::try_exists(format!("{}/.config/todo-manager", &home_dir)) {
+        match fs::try_exists(format!("{}/.config/todo-manager/todos", &home_dir)) {
             Ok(r) => {
                 if r {
                     let mut lines: Vec<String> = Vec::new();
