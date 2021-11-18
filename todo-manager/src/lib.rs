@@ -44,7 +44,10 @@ impl TM
     }
 
     pub fn parse_args(&mut self, args: Vec<String>) -> Result<(), Box<dyn Error>> {
-        if args.len() < 3 {
+        if args.len() == 1 {
+            show_help();
+            process::exit(1);
+        } else if args.len() > 1 && args.len() < 3 {
             self.todo_show();
             process::exit(1);
         }
@@ -68,6 +71,11 @@ impl TM
 
     fn todo_add(&mut self, todo: String) {
         self.todos.push(todo);
+        let new_list_of_todo: String = self.todos.join("\n");
+        if let Err(e) = fs::write(&self.save_path, new_list_of_todo) {
+            eprintln!("Error: {}", e);
+            process::exit(1);
+        }
     }
 
     fn todo_remove(&mut self, index: usize) {
@@ -95,5 +103,6 @@ USAGE
 
 OPTIONS
     add     adds a new todo item
-    remove  removes a todo item");
+    remove  removes a todo item
+    show    shows the list of todos");
 }
