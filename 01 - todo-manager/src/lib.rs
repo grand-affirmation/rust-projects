@@ -6,6 +6,7 @@ use std::fs;
 use std::process;
 use std::error::Error;
 use home;
+use colored::Colorize;
 
 pub struct TM
 {
@@ -89,10 +90,11 @@ impl TM
 
     fn todo_show(&self) {
         let mut index = 1;
+        let header = "TODO LIST".red().bold();
 
-        println!("TODO LIST\n");
+        println!("{}", header);
         for todo in self.todos.iter() {
-            println!("[{}]  {}", index, todo);
+            println!("{}  {}", format!("[{}]", index).green(), todo);
             index += 1;
         }
     }
@@ -100,14 +102,17 @@ impl TM
 
 fn show_help()
 {
-    eprintln!("
-Todo Manager 
+    eprintln!("{}", format!("{}
 
-USAGE
-    tm [OPTIONS] [args]
+    {}
+        tm {} {}
 
-OPTIONS
-    add     adds a new todo item
-    remove  removes a todo item
-    show    shows the list of todos");
+    {}
+        {}\tadds a new todo item
+        {}\tremoves a todo item
+        {}\tshows the list of todos",
+    "TODO MANAGER".blue().bold(), "USAGE".blue(),
+    "[OPTIONS]".green(), "[args]".magenta(),
+    "OPTIONS".blue(), "add".green(), "remove".green(),
+    "show".green()));
 }
