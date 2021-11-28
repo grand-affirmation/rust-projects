@@ -47,8 +47,6 @@ impl PG
             }
         }
 
-        println!("{:?}, {}", parsed_ops, l);
-
         Ok(PG {
             password: String::new(),
             options: parsed_ops,
@@ -56,38 +54,36 @@ impl PG
         })
     }
 
-    fn generate_password(&mut self) -> Result<(), &str> {
+    pub fn generate_password(&mut self) -> Result<(), &str> {
         let alphabet_low = "qwertyuiopasdfghjklzxcvbnm";
         let alphabet_up = "QWERTYUIOPASDFGHJKLZXCVBNM";
         let numbers = "0123456789";
         let specials = "*&^%$";
         
         for _ in 0..self.length {
-            let r: u8 = rand::thread_rng().gen_range(0..4);
+            let r = self.options.get(thread_rng().gen_range(0..self.options.len())).unwrap();
             match r {
-                0 => {
+                &Ops::Lowercase => {
                     let i: usize = thread_rng().gen_range(0..alphabet_low.len());
                     self.password.push_str(alphabet_low.get(i..i+1).unwrap());
                 },
-                1 => {
+                &Ops::Uppercase => {
                     let i: usize = thread_rng().gen_range(0..alphabet_up.len());
                     self.password.push_str(alphabet_up.get(i..i+1).unwrap());
                 },
-                2 => {
+                &Ops::Number => {
                     let i: usize = thread_rng().gen_range(0..numbers.len());
                     self.password.push_str(numbers.get(i..i+1).unwrap());
                 },
-                3 => {
+                &Ops::Special => {
                     let i: usize = thread_rng().gen_range(0..specials.len());
                     self.password.push_str(specials.get(i..i+1).unwrap());
                 },
-                _ => {
-                    return Err("Error!");
-                }
             }
         }
+
+        println!("{}", self.password);
 
         Ok(())
     }
 }
-
