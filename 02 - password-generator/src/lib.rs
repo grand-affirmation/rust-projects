@@ -1,6 +1,6 @@
 mod pg;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 enum Ops
 {
     Uppercase,
