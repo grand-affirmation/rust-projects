@@ -1,10 +1,11 @@
 [package]
 name = "pg"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
 
 [dependencies]
 rand = '0.8.4'
+colored = '2.0.0'
 
 [profile.release]
 lto = "fat"

@@ -1,6 +1,8 @@
 use rand::prelude::*;
 use crate::PG;
 use crate::Ops;
+use std::process;
+use colored::*;
 
 impl PG
 {
@@ -17,6 +19,10 @@ impl PG
         // argument parsing
         for a in args.iter() {
             if a.get(0..1).unwrap() == "-" {
+                if a.contains('h') {
+                    show_help();
+                    process::exit(1);
+                }
                 if a.contains('u') {
                     if !parsed_ops.contains(&Ops::Uppercase) {
                         parsed_ops.push(Ops::Uppercase);
@@ -86,4 +92,23 @@ impl PG
 
         Ok(())
     }
+}
+
+fn show_help() 
+{
+    eprintln!("{}", format!("
+    {} - a simple password generator 
+
+    {} 
+        pg {} {}
+
+    {} (prepend with -)
+        {}   use uppercase letters
+        {}   use lowercase letters
+        {}   use numbers
+        {}   use symbols
+
+    {}
+        pg -ulns 18
+        pg -ln 20", "pg".bold().blue(), "USAGE".blue(), "[OPTIONS]".green(), "[LENGTH]".green(), "OPTIONS".blue(), "u".green(), "l".green(), "n".green(), "s".green(), "EXAMPLE".blue()));
 }
