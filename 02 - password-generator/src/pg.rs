@@ -49,12 +49,11 @@ impl PG
                     }
                 }
             } else { // if the argument didn't started with '-', treat it as the length
-                let parsed_length = a.parse::<u16>(); // convert the length arg to u16
-                if let Err(_) = parsed_length { // if that was an error, return:
-                    return Err("Argument invalid. Check -h.");
-                } else { // if it's not an erorr, it's a u16, set variable l to that
-                    l = parsed_length.unwrap();
-                }
+                let parsed_length = match a.parse::<u16>() { 
+                    Ok(l) => l,
+                    Err(_) => {return Err("Error getting length.");},
+                };
+                l = parsed_length
             }
         }
 
