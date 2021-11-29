@@ -1,5 +1,8 @@
+// lib.rs
+
 mod pg;
 
+// the options that can be enabled
 #[derive(Debug, PartialEq)]
 enum Ops
 {
@@ -9,6 +12,7 @@ enum Ops
     Special,
 }
 
+// the password generator
 pub struct PG 
 {
     password: String,
