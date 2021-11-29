@@ -18,10 +18,14 @@ A simple password generator.
 
 ## OPTIONS 
 Prepend with '-'.
+	
 	u   use uppercase letters
-        l   use lowercase letters
-        n   use numbers
-        s   use symbols
+        
+	l   use lowercase letters
+       
+       	n   use numbers
+        
+	s   use symbols
 
 ## EXAMPLE 
 	
