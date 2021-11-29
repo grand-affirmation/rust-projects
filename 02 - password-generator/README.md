@@ -13,7 +13,8 @@ A simple password generator.
 	$ cargo install --path .
 
 ## USAGE
-	`pg [OPTIONS] [LENGTH]`
+	
+	pg [OPTIONS] [LENGTH]
 
 ## OPTIONS 
 Prepend with '-'.
@@ -22,7 +23,9 @@ Prepend with '-'.
         n   use numbers
         s   use symbols
 
-## EXAMPLE
-        `pg -ulns 18`
-        `pg -ln 20`
+## EXAMPLE 
+	
+	pg -ulns 18
+        
+	pg -ln 20
 
